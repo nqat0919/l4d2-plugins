@@ -16,7 +16,15 @@ Allows survivors to change their pipebomb timer on its explosion
 
 * Require
     1. [[INC] Colors](https://forums.alliedmods.net/showthread.php?t=96831)
-    2. [[L4D & L4D2] Left 4 DHooks Direct](https://forums.alliedmods.net/showthread.php?t=321696)
+
+* <details><summary>Changelogs</summary>
+
+  ```
+  29/01/2024 - initial release
+  30/01/2024 - added virtual offset, this plugin no longer requires l4dhooks
+  ```
+</details>
+
 - - - -
 # Mô tả (Tiếng việt)
 Cho phép survivor điều chỉnh thời gian nổ của Pipebomb trên tay
@@ -36,4 +44,3 @@ Cho phép survivor điều chỉnh thời gian nổ của Pipebomb trên tay
 
 * Yêu cầu
     1. [[INC] Colors](https://forums.alliedmods.net/showthread.php?t=96831)
-    2. [[L4D & L4D2] Left 4 DHooks Direct](https://forums.alliedmods.net/showthread.php?t=321696)
