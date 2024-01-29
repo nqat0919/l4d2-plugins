@@ -2,11 +2,12 @@
 #pragma newdecls required
 #include <sourcemod>
 #include <sdktools>
-#include <left4dhooks>
+#include <sdkhooks>
 #include <colors>
-#define PLUGIN_VERSION "1.2"
+#define PLUGIN_VERSION "1.3"
+#define GAMEDATA			"Tuan_l4d2_pipebomb_change_timer"
 ConVar pipebomb_duration;
-
+Handle g_hSDK_CBaseGrenade_Detonate;
 enum struct Context
 {
 	ArrayList projectiles;
@@ -41,6 +42,24 @@ public Plugin myinfo =
 
 public void OnPluginStart()
 {
+	// GameData
+	char sPath[PLATFORM_MAX_PATH];
+	BuildPath(Path_SM, sPath, sizeof(sPath), "gamedata/%s.txt", GAMEDATA);
+	if( FileExists(sPath) == false ) SetFailState("\n==========\nMissing required file: \"%s\"\n==========", sPath);
+
+	Handle hGameData = LoadGameConfigFile(GAMEDATA);
+	if( hGameData == null ) SetFailState("Failed to load \"%s.txt\" gamedata.", GAMEDATA);
+	StartPrepSDKCall(SDKCall_Entity);
+	if( PrepSDKCall_SetFromConf(hGameData, SDKConf_Virtual, "CBaseGrenade::Detonate") == false )
+	{
+		LogError("Failed to find signature: \"CBaseGrenade::Detonate\"");
+	} 
+	else {
+		g_hSDK_CBaseGrenade_Detonate = EndPrepSDKCall();
+		if( g_hSDK_CBaseGrenade_Detonate == null )
+			LogError("Failed to create SDKCall: \"CBaseGrenade::Detonate\"");
+	}
+	delete hGameData;
 	LoadTrans();
 	pipebomb_duration = FindConVar("pipe_bomb_timer_duration");
 	for (int i = 1; i <= MaxClients; i++)
@@ -121,7 +140,7 @@ Action Explode_Timer_Handle(Handle timer, int client)
 	int entity = EntRefToEntIndex(g_clientPrj[client].projectiles.Get(0));
 	g_clientPrj[client].projectiles.Erase(0);
 	if (!IsValidEntity(entity) || entity <= MaxClients) return Plugin_Continue;
-	L4D_DetonateProjectile(entity);
+	SDKCall(g_hSDK_CBaseGrenade_Detonate, entity);
 	return Plugin_Continue;
 }
 
