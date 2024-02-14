@@ -363,7 +363,7 @@ public int NightVisionSettings_Menu(Menu menu, MenuAction action, int param1, in
 				Toggle(param1);
 				menu.Display(param1, MENU_TIME_FOREVER);
 			}
-			else
+			else if (StrEqual(buff, "ccint_inc") || StrEqual(buff, "ccint_dec"))
 			{
 				if(StrEqual(buff, "ccint_inc"))
 					gc_eSettings[param1].intensity = Change(gc_eSettings[param1].intensity + 1, 0, 10);
@@ -383,7 +383,7 @@ public int NightVisionSettings_Menu(Menu menu, MenuAction action, int param1, in
 		
 		case MenuAction_End:
 		{
-			if (param1 != MenuEnd_Selected)
+			if (param2 != MenuEnd_Selected)
 				delete menu;
 		}
 	}
@@ -431,7 +431,7 @@ public int CorrectionList_Menu(Menu menu, MenuAction action, int param1, int par
 		
 		case MenuAction_End:
 		{
-			if (param1 != MenuEnd_Selected)
+			if (param2 != MenuEnd_Selected)
 				delete menu;
 		}
 	}
